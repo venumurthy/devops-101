@@ -18,7 +18,7 @@
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },
         "CidrBlock" : "10.0.0.0/24",
-        "AvailabilityZone" : "eu-west-1a",
+        "AvailabilityZone" : "us-east-1a",
         "Tags" : [ {"Key" : "Name", "Value" : "devops-part-four"} ]
       }
     },
@@ -189,9 +189,9 @@
     "EC2InstanceCIMaster" : {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "ImageId" : "ami-25865252",
+        "ImageId" : "ami-cc5be9a4",
         "InstanceType" : "m1.medium",
-        "KeyName" : "main",
+        "KeyName" : "venu",
         "SubnetId" : { "Ref" : "Subnet" },
         "SecurityGroupIds" : [ { "Ref" : "SecurityGroup" } ],
         "Tags" : [ { "Key" : "Name", "Value" : "CI Master" } ]
@@ -201,9 +201,9 @@
     "EC2InstanceCISlave" : {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
-        "ImageId" : "ami-25865252",
+        "ImageId" : "ami-cc5be9a4",
         "InstanceType" : "m1.medium",
-        "KeyName" : "main",
+        "KeyName" : "venu",
         "SubnetId" : { "Ref" : "Subnet" },
         "SecurityGroupIds" : [ { "Ref" : "SecurityGroup" } ],
         "IamInstanceProfile" : { "Ref" : "InstanceProfileForCISlave" },
