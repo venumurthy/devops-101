@@ -4,5 +4,5 @@
 
 (deftest dummy-function-test
   (testing "dummy-function"
-    (is (= 2 (dummy-function 0)))
+    (is (= 1 (dummy-function 0)))
     (is (= 5 (dummy-function 4)))))
