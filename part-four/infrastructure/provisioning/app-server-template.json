@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description" : "devops-part-four, app-server",
+  "Description" : "devops-4, app-server",
 
   "Parameters" : {
     "SubnetId" : { "Type" : "String" },
