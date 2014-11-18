@@ -22,7 +22,7 @@
       "Properties" : {
         "ImageId" : "ami-cc5be9a4",
         "InstanceType" : "m1.medium",
-        "KeyName" : "main",
+        "KeyName" : "venu",
         "SubnetId" : { "Ref" : "SubnetId" },
         "SecurityGroupIds" : [ { "Ref" : "SecurityGroupId" } ],
         "Tags" : [ { "Key" : "Name", "Value" : { "Fn::Join" : ["", ["App Server - Build ", { "Ref" : "BuildNumber" } ] ] } } ],
