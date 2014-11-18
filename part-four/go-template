@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="72">
+  <server artifactsdir="artifacts" commandRepositoryLocation="default" serverId="d0aa23c9-5e18-4c1b-8c85-098de2e3afcb" />
+  <pipelines group="defaultGroup">
+    <pipeline name="LeiningenPipeline">
+      <materials>
+        <git url="https://github.com/venumurthy/devops-101" />
+      </materials>
+      <stage name="TestStage" cleanWorkingDir="true">
+        <jobs>
+          <job name="TestJob">
+            <tasks>
+              <exec command="lein" workingdir="part-four/application">
+                <arg>test</arg>
+              </exec>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="packageStage" cleanWorkingDir="true">
+        <jobs>
+          <job name="packageJob">
+            <tasks>
+              <exec command="lein" workingdir="part-four/application">
+                <arg>uberjar</arg>
+              </exec>
+              <exec command="sh" workingdir="part-four/application/target/uberjar">
+                <arg>-c</arg>
+                <arg>rename "s/-SNAPSHOT/-$GO_PIPELINE_COUNTER/" application-*.jar</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+            <artifacts>
+              <artifact src="part-four/application/target/uberjar/application-*jar" dest="packages" />
+            </artifacts>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="publishStage" cleanWorkingDir="true">
+        <jobs>
+          <job name="pubishJob">
+            <tasks>
+              <fetchartifact pipeline="LeiningenPipeline" stage="packageStage" job="packageJob" srcdir="packages">
+                <runif status="passed" />
+              </fetchartifact>
+              <exec command="sh">
+                <arg>-c</arg>
+                <arg>aws s3 cp packages/ s3://devops-part-four/ --recursive --exclude "*" --include "application-*-$GO_PIPELINE_COUNTER*jar"</arg>
+              </exec>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+      <stage name="deployStage" cleanWorkingDir="true">
+        <jobs>
+          <job name="deployJob">
+            <tasks>
+              <exec command="ruby" workingdir="part-four/ci-utilities">
+                <arg>deploy-new-app-server.rb</arg>
+              </exec>
+              <exec command="ruby" workingdir="part-four/ci-utilities">
+                <arg>retire-old-app-server.rb</arg>
+                <runif status="passed" />
+              </exec>
+            </tasks>
+          </job>
+        </jobs>
+      </stage>
+    </pipeline>
+  </pipelines>
+  <agents>
+    <agent hostname="ci-slave" ipaddress="10.0.0.200" uuid="fff6421f-9ecd-49a7-832a-bf3511f9428e" />
+  </agents>
+</cruise>
+
