@@ -30,7 +30,7 @@ def commence_creation_of_stack(build_number, subnet_id, security_group_id)
   `aws cloudformation create-stack \
   --stack-name app-server-build-#{build_number} \
   --template-body "file://../infrastructure/provisioning/app-server-template.json" \
-  --region eu-west-1 \
+  --region us-east-1 \
   --output text \
   --parameters \
   ParameterKey=SubnetId,ParameterValue=#{subnet_id} \
@@ -42,7 +42,7 @@ end
 def check_that_the_stack_has_been_created(build_number)
   describe_stacks_command = "aws cloudformation describe-stacks \
                              --stack-name app-server-build-#{build_number} \
-                             --region eu-west-1 \
+                             --region us-east-1 \
                              --output json"
   stacks = JSON.parse(`#{describe_stacks_command}`)["Stacks"]
   stack_status = stacks.first["StackStatus"]
