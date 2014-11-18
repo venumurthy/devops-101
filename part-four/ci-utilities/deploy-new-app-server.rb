@@ -6,7 +6,7 @@ require 'json'
 def extract_subnet_id
   describe_subnets_command = "aws ec2 describe-subnets \
                               --filters Name=tag:aws:cloudformation:logical-id,Values=Subnet \
-                              --region us-east-1a \
+                              --region us-east-1 \
                               --output json"
   subnets = JSON.parse(`#{describe_subnets_command}`)["Subnets"]
   subnet_id = subnets.first["SubnetId"]
@@ -17,7 +17,7 @@ end
 def extract_security_group_id
   describe_security_groups_command = "aws ec2 describe-security-groups \
                                       --filters Name=tag:aws:cloudformation:logical-id,Values=SecurityGroup \
-                                      --region us-east-1a \
+                                      --region us-east-1 \
                                       --output json"
   security_groups = JSON.parse(`#{describe_security_groups_command}`)["SecurityGroups"]
   security_group_id = security_groups.first["GroupId"]
