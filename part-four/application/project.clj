@@ -1,5 +1,5 @@
 (defproject application "0.1.0-SNAPSHOT"
-  :description "a dummy application"
+  :description "Welcome to Phoenix Infrastructure"
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.1.9"]
                  [ring "1.3.1"]
